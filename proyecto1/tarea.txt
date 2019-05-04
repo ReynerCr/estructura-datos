@@ -1,0 +1,13 @@
+Se requiere medir el tiempo de ejecución en segundos, milisegundos y nanosegundos de los métodos: burbuja optimizada, shakersort optimizado, inserción directa, selección directa, radixsort ,shellsort y quicksort; aplicado a un array de palabras del idioma español (se recomienda descargar un diccionario para obtener la data y desordenarlo en una rutina aparte). Imprimir un reporte con los métodos en orden de eficiencia mostrando el tiempo de ejecución en cada uno.
+Hacer el mismo procedimiento con los métodos de búsqueda: secuencial por bloques, búsqueda binaria y hashing con función plegamiento por suma de pares de dígitos consecutivos y prueba del espacio libre ( prueba lineal) para resolver la colisión.
+Adicional al proyecto deberá entregar un informe (Word) indicando según pruebas realizadas en su computador, los métodos que resultaron más eficientes y sus estadísticas.
+
+
+-----------------------------------------------------------------------------------------------------
+Resumen: tiempo de ejecución en segundos, milisegundos y nanosegundos.
+metodos: burbuja optimizada, shakersort optimizado, inserción directa, selección directa, radixsort, shellsort y quicksort.
+data: aplicado a un array de palabras del idioma español (se recomienda descargar un diccionario para obtener la data y desordenarlo en una rutina aparte).
+Imprimir un reporte con los métodos en orden de eficiencia mostrando el tiempo de ejecución en cada uno.
+
+Hacer el mismo procedimiento con los métodos de búsqueda: secuencial por bloques, búsqueda binaria y hashing con función plegamiento por suma de pares de dígitos consecutivos y prueba del espacio libre ( prueba lineal) para resolver la colisión.
+Adicional al proyecto deberá entregar un informe (Word) indicando según pruebas realizadas en su computador, los métodos que resultaron más eficientes y sus estadísticas.
