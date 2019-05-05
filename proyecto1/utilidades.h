@@ -1,6 +1,5 @@
 //utilidades.h
 #include <iostream>
-#include "gotoxy.h"
 
 using namespace std;
 
@@ -18,21 +17,21 @@ void vaciarArray(T vector[], int length) {
 		vector[i] = -1;
 }
 
-
 template<class T>
-void imprimirArray(T vector[], int length, int movidos[], int lengthMovidos) {
-	int i, k = 0;
+void imprimirArray(T vector[], int length) {
+	int i;
 	
-	cout<<" | ";
 	for (i = 0; i < length; i++) {
-		 if (movidos[k] != -1 && i == movidos[k]) {
-		 	SetConsoleTextAttribute (GetStdHandle (STD_OUTPUT_HANDLE),2);
-			k++;
-		 }
-		 
-		 cout<<vector[i];
-		 SetConsoleTextAttribute (GetStdHandle (STD_OUTPUT_HANDLE),7);
-		 cout<<" | ";
+		 cout<<vector[i]<<" | ";
 	}//for i
 	cout << endl;
 }//imprimirArray()
+
+//funcion de utilidad para obtener el mayor valor de un vector
+int getMax(int vector[], int length) { 
+    int max = vector[0]; 
+    for (int i = 1; i < length; i++) 
+        if (vector[i] > max) 
+            max = vector[i]; 
+    return max; 
+}//getMax()

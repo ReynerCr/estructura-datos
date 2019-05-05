@@ -1,95 +1,68 @@
-#include <iostream>
 #include <math.h>
 #include "utilidades.h"
 
 using namespace std;
 
 template<class T>
-void burbujaBandera(T vector[], T length) {
-	int movidos[20];
-	vaciarArray(movidos, 20);
-	cout<<"ORIGINAL:"<<endl;
-	imprimirArray(vector, length, movidos, 0);
-	cout<<endl;
-	
-	int i, j, bandera = 1, k = 0;
-	for (i = 0; i < length - 1 && bandera != 0; i++) {
-		bandera = 0;
+void burbujaBandera(T vector[], T length) {	
+	int i, j;
+	bool bandera;
+	for (i = 0; i < length - 1 && bandera; i++) {
+		bandera = false;
 		for (j = 0; j < length - i - 1; j++) {
 			if (vector[j] > vector[j+1]) { //simbolo altera el orden
 				intercambiar(vector[j], vector[j+1]);
-				bandera = 1;
-				movidos[k++] = j;
-				movidos[k++] = j+1;
+				bandera = true;
 			}//if
-			imprimirArray(vector, length, movidos,  k);
-			k = 0;
-			vaciarArray(movidos, 20);
 		}//for de chequeo e intercambio (si es necesario) de valores
 	}//for de repeticiones del algoritmo
 }//burbujaBandera()
 
 template<class T>
-void shakeSort(T a[], int length) {
-	int movidos[20];
-	vaciarArray(movidos, 20);
-	cout<<"ORIGINAL:"<<endl;
-	imprimirArray(a, length, movidos, 0);
-	cout<<endl;
-	
-	int bandera = 1; //utilizare como booleano 
-    int inicio = 0; 
-    int fin = length - 1; 
-  	int i, j, k = 0;
+void shakerSort(T a[], int length) {
+	bool bandera = true;
+    int inicio = 0, fin = length - 1, i, j;
   	
     while (bandera) { 
-        bandera = 0; 
+        bandera = false; 
         for (i = inicio; i < fin; ++i) { 
             if (a[i] > a[i + 1]) { 
                 intercambiar(a[i], a[i + 1]); 
-                bandera = 1;
-                movidos[k++] = i;
-				movidos[k++] = i+1;
+                bandera = true;
             }//if
-			imprimirArray(a, length, movidos, k);
-			k = 0;
-			vaciarArray(movidos, 20);
         }//for
         
-        if (bandera == 0) 
+        if (!bandera) 
             break; 
             
-        bandera = 0; 
+        bandera = false;
         --fin;
         for (i = fin - 1; i >= inicio; --i) { 
             if (a[i] > a[i + 1]) { 
                 intercambiar(a[i], a[i + 1]); 
-                bandera = 1;
-                movidos[k++] = i;
-				movidos[k++] = i+1;
+                bandera = true;
             }//if
-            imprimirArray(a, length, movidos, k);
-            k = 0;
-			vaciarArray(movidos, 20);
         }//for
         ++inicio; 
     }//while
 }//shakerShort()
 
-//INSERCION DIRECTA HACER
+//INSERCION DIRECTA
 template<class T>
 void insercionDirecta(T vector[], T length) {
-	
+	int i, j;
+	for (i = 0; i < length - 1; i++) {
+		if (vector[i] > vector[i+1]) {
+			intercambiar(vector[i], vector[i+1]);
+			for (j = i; j > 0; j--)
+				if (vector[j-1] > vector[j])
+					intercambiar(vector[j], vector[j-1]);
+		}//if
+	}//for i
 }//insercionDirecta()
 
 template<class T>
-void seleccionDirecta(T vector[], T length) {
-	int movidos[2];
-	vaciarArray(movidos, 2);
-	cout<<"ORIGINAL:"<<endl;
-	imprimirArray(vector, length, movidos, 0);
-	cout<<endl;
-	
+void seleccionDirecta(T vector[], T length) {	
 	int i, j;
 	for (i = 0; i < length; i++) {
 		int min = i;
@@ -97,36 +70,81 @@ void seleccionDirecta(T vector[], T length) {
 		//compruebo en todo el array s
 		for (j = i + 1; j < length; j++) {
 			if (vector[j] < vector[min])  { //simbolo  altera el orden (creciente o decreciente)
-				vaciarArray(movidos, 2);
 				min = j;
-				movidos[0] = i;
-				movidos[1] = min;
 			}//if
-			imprimirArray(vector, length, movidos, 2);
 		}//for j
 
-		movidos[0] = i;
-		movidos[1] = min;
 		intercambiar(vector[i], vector[min]); //intercambio los elementos
-		imprimirArray(vector, length, movidos, 2);
-		vaciarArray(movidos, 2);
 	}//for i
 }//seleccionDirecta()
 
-//HACER
+/* 
++ COUNTINGSORT Y RADIXSORT ESTAN SACADOS DE https://www.geeksforgeeks.org/radix-sort/
++ TRADUCIDOS AL ESPANYOL Y ADAPTADOS AL CODIGO
+*/
+// funcion para hacer countingSort al vector de acuerdo al
+// digito representado por exp
 template<class T>
-void radixsort(T vector[], T length) {
-	
-}//radixsort()
+void countSort(T vector[], int length, int exp) { 
+    T salida[length]; // output array 
+    int i, cont[10] = {0}; 
+  
+    //almacena las ocurrencias en cont
+	for (i = 0; i < length; i++) 
+    	cont[ (vector[i]/exp)%10 ]++; 
+  
+    // cambia cont[i] asi que cont[i] ahora contiene la actual
+	// posicion de este digito en salida[] 
+    for (i = 1; i < 10; i++) 
+        cont[i] += cont[i - 1]; 
+  
+    // contruye el vector de salida[] 
+    for (i = length - 1; i >= 0; i--) { 
+        salida[cont[ (vector[i]/exp)%10 ] - 1] = vector[i]; 
+        cont[ (vector[i]/exp)%10 ]--; 
+    } 
+  
+    // copia el vector de salida a vector[], asi que vector[] ahora 
+    // contiene numeros ordenados de acuerdo al numero actual 
+    for (i = 0; i < length; i++) 
+        vector[i] = salida[i]; 
+}//countSort()
+  
+// funcion principal que arregla el vector de tamaño length usando
+// radixSort
+template<class T>
+void radixsort(T vector[], int length) { 
+    // encuentra el numero mayor para conocer el numero de digitos
+    int max = getMax(vector, length); 
+  
+    // Hace countingSort por cada digito. Notar que en vez de 
+    // pasar el numero del digito, exp es pasado. exp es 10^i 
+    // donde i es el actual digito del numero
+    for (int exp = 1; max/exp > 0; exp *= 10) 
+        countSort(vector, length, exp); 
+}//radixSort()
+//FIN DE COUNTINGSORT Y RADIXSORT ADAPTADOS
+
+template<class T>
+void shellSort(T vector[], int length) {
+	bool band;
+	int i, iner = floor(length/2);
+	while (iner > 0) {
+		band = false;
+		for (i=0; i + iner < length; i++)
+			if (vector[i]>vector[i+iner]) {
+				intercambiar(vector[i], vector[i+iner]);
+				band = true;
+			}//if
+		//salida for
+		
+		if(!band)
+			iner = floor(iner / 2);
+	}//while
+}//shellSort()
 
 //HACER
 template<class T>
-void shellsort() {
-	
-}//shellsort()
-
-//HACER
-template<class T>
-void quicksort() {
+void quicksort(T v[], int length) {
 	
 }//quicksort()

@@ -1,6 +1,7 @@
 #include <ctype.h>
 #include <iostream>
 #include "ordenamiento.h"
+#include "busqueda.h"
 
 using namespace std;
 
@@ -34,8 +35,7 @@ int main(int argc, char** argv) {
 			int aux;
 			switch (menu) {
 				case '1':
-					burbujaSimple(vectorResultado, length);
-					break;
+					insercionDirecta(vectorResultado, length);
 				case '2':
 					burbujaBandera(vectorResultado, length);
 					break;
@@ -43,21 +43,22 @@ int main(int argc, char** argv) {
 					seleccionDirecta(vectorResultado, length);
 					break;
 				case '4':
-					shakeSort(vectorResultado, length);
+					shakerSort(vectorResultado, length);
 					break;
 				case '5':
-					cout<<"Que numero desea buscar?  ";
-					cin>>aux;
-					aux = busquedaLinealSimple(vectorResultado, length, aux);
-					if (aux != -1)
-						cout<<endl<<"Se encontro en la posicion "<<aux<<"."<<endl;
-					else
-						cout<<endl<<"No se encontro el numero en el vector."<<endl;
+					cout<<"Vector original: ";
+					imprimirArray(vectorResultado, length);
+					shellSort(vectorResultado, length);
+					imprimirArray(vectorResultado, length);
 					break;
 				case '6':
 					seleccionDirecta(vectorResultado, length);
+					cout<<"Vector original: ";
+					imprimirArray(vectorResultado, length);
+					
 					cout<<endl<<endl<<endl<<"Que numero desea buscar?  ";
 					cin>>aux;
+					cout<<"AUX VALE: "<<aux<<endl;
 					aux = busquedaLinealBloque(vectorResultado, length, aux);
 					if (aux != -1)
 						cout<<endl<<"Se encontro en la posicion "<<aux<<"."<<endl;

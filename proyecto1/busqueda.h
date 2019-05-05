@@ -1,17 +1,8 @@
 template<class T>
 int busquedaLinealSimple(T vector[], int length, T buscar) { //cuando el array esta ordenado, no necesariamente finaliza en la ultima posicion
-	int movidos[1];
-	vaciarArray(movidos, 1);
-	cout<<"ORIGINAL:"<<endl;
-	imprimirArray(vector, length, movidos, 0);
-	cout<<endl;
-	
 	int i = 0;
 	while (i < length && vector[i] != buscar) {
 		i++;
-		movidos[0] = i;
-		imprimirArray(vector, length, movidos, 1);
-		vaciarArray(movidos, 1);
 	}//while
 	
 	if (i >= length)
@@ -21,18 +12,12 @@ int busquedaLinealSimple(T vector[], int length, T buscar) { //cuando el array e
 }//busquedaLinealSimple()
 
 template<class T>
-int busquedaLinealBloque(T vector[], int length, T buscar) {
-	int movidos[1];
-	vaciarArray(movidos, 1);
-	cout<<"ORIGINAL:"<<endl;
-	imprimirArray(vector, length, movidos, 0);
-	cout<<endl;
-	
+int busquedaLinealBloque(T vector[], int length, T buscar) {	
 	bool encontrado = false;
-	int i, bloques = floor(sqrt(length)), j = 0;
-	for (i = bloques-1; i <= bloques*bloques; i += bloques) {
+	int i, tamBloque = floor(sqrt(length)), j = 0;
+	for (i = tamBloque-1; i <= (tamBloque*tamBloque) - 1; i += tamBloque) {
 		if (vector[i] >= buscar) {
-			for (j = i - bloques; j <= i; j++) {
+			for (j = i - (tamBloque - 1); j <= i; j++) {
 				if (buscar == vector[j]) {
 					encontrado = true;	
 					break;
@@ -42,25 +27,19 @@ int busquedaLinealBloque(T vector[], int length, T buscar) {
 		}//if
 	}//for i
 	
-	if (length > bloques*bloques && !encontrado) {
+	if (!encontrado && length > tamBloque*tamBloque) {
 		if (vector[length - 1] >= buscar)
-			for (i -= 2; i < length; i++)
+			for (i = length - 1; i > (tamBloque*tamBloque - 1); i--)
 				if (buscar == vector[i]) {
 					j = i;
 					encontrado = true;
 					break;
 				}
-	}//if length > bloques*bloques
+	}//if length > tamBloque*tamBloque
 	
 	if (!encontrado)
 		j = -1;
 		
-	else {
-		movidos[0] = j;
-		imprimirArray(vector, length, movidos, 1);
-		vaciarArray(movidos, 1);
-	}
-
 	return j;
 }//busquedaLinealBloque()
 
@@ -77,6 +56,7 @@ int hashFuncPlegamiento(T vector[], int length, T buscar) {
 }//hashFuncPlegamiento()
 
 //HACER QUE RESUELVA COLISION
+template<class T>
 int hashEspacioLibre(T vector[], int length, T buscar) {
 	
 }//hashEspacioLibre()
