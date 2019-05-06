@@ -4,7 +4,7 @@
 using namespace std;
 
 template<class T>
-void burbujaBandera(T vector[], T length) {	
+void burbujaOptima(T vector[], T length) {	
 	int i, j;
 	bool bandera;
 	for (i = 0; i < length - 1 && bandera; i++) {
@@ -16,7 +16,7 @@ void burbujaBandera(T vector[], T length) {
 			}//if
 		}//for de chequeo e intercambio (si es necesario) de valores
 	}//for de repeticiones del algoritmo
-}//burbujaBandera()
+}//burbujaOptima()
 
 template<class T>
 void shakerSort(T a[], int length) {
@@ -45,9 +45,8 @@ void shakerSort(T a[], int length) {
         }//for
         ++inicio; 
     }//while
-}//shakerShort()
+}//shakerSort()
 
-//INSERCION DIRECTA
 template<class T>
 void insercionDirecta(T vector[], T length) {
 	int i, j;
@@ -79,7 +78,7 @@ void seleccionDirecta(T vector[], T length) {
 }//seleccionDirecta()
 
 /* 
-+ COUNTINGSORT Y RADIXSORT ESTAN SACADOS DE https://www.geeksforgeeks.org/radix-sort/
++ COUNTINGSORT Y RADIXSORT SACADOS DE https://www.geeksforgeeks.org/radix-sort/
 + TRADUCIDOS AL ESPANYOL Y ADAPTADOS AL CODIGO
 */
 // funcion para hacer countingSort al vector de acuerdo al
@@ -143,8 +142,30 @@ void shellSort(T vector[], int length) {
 	}//while
 }//shellSort()
 
-//HACER
 template<class T>
-void quicksort(T v[], int length) {
+void quickSort(T vector[], int izq, int der) {
+   	T pivote = vector[(izq+der) / 2];
+	int i = izq, j = der;
 	
-}//quicksort()
+	//particion
+	while (i < j) {
+		while (vector[i] < pivote) {
+			i++;
+		}
+		while (vector[j] > pivote) {
+			j--;
+		}
+		if (i <= j) {
+			intercambiar(vector[i], vector[j]);
+			j--;
+			i++;
+		}//if
+	}//while
+
+	//recursividad
+	if (izq < j) 
+		quickSort(vector, izq, j);
+		
+	if (i < der)
+		quickSort(vector, i, der);
+}//quickSort()
