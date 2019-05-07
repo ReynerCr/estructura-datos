@@ -4,18 +4,20 @@
 using namespace std;
 
 template<class T>
-void burbujaOptima(T vector[], T length) {	
-	int i, j;
-	bool bandera;
-	for (i = 0; i < length - 1 && bandera; i++) {
-		bandera = false;
-		for (j = 0; j < length - i - 1; j++) {
-			if (vector[j] > vector[j+1]) { //simbolo altera el orden
-				intercambiar(vector[j], vector[j+1]);
-				bandera = true;
+void burbujaOptima(T vector[], int length) {
+	int i, j = length - 1;
+	bool bandera = false;
+
+	while (!bandera) {
+		bandera = true;
+		for  (i = 0; i < j; i++) {
+			if  (vector[i] > vector[i + 1]) {
+				intercambiar(vector[i], vector[i+1]);
+				bandera = false;
 			}//if
-		}//for de chequeo e intercambio (si es necesario) de valores
-	}//for de repeticiones del algoritmo
+		}//for
+		j--;
+	}//while
 }//burbujaOptima()
 
 template<class T>
@@ -48,7 +50,7 @@ void shakerSort(T a[], int length) {
 }//shakerSort()
 
 template<class T>
-void insercionDirecta(T vector[], T length) {
+void insercionDirecta(T vector[], int length) {
 	int i, j;
 	for (i = 0; i < length - 1; i++) {
 		if (vector[i] > vector[i+1]) {
@@ -61,7 +63,7 @@ void insercionDirecta(T vector[], T length) {
 }//insercionDirecta()
 
 template<class T>
-void seleccionDirecta(T vector[], T length) {	
+void seleccionDirecta(T vector[], int length) {	
 	int i, j;
 	for (i = 0; i < length; i++) {
 		int min = i;
@@ -83,14 +85,14 @@ void seleccionDirecta(T vector[], T length) {
 */
 // funcion para hacer countingSort al vector de acuerdo al
 // digito representado por exp
-template<class T>
+/*template<class T>
 void countSort(T vector[], int length, int exp) { 
     T salida[length]; // output array 
     int i, cont[10] = {0}; 
   
     //almacena las ocurrencias en cont
 	for (i = 0; i < length; i++) 
-    	cont[ (vector[i]/exp)%10 ]++; 
+    	cont[(vector[i]/exp)%10]++; 
   
     // cambia cont[i] asi que cont[i] ahora contiene la actual
 	// posicion de este digito en salida[] 
@@ -112,9 +114,9 @@ void countSort(T vector[], int length, int exp) {
 // funcion principal que arregla el vector de tamaño length usando
 // radixSort
 template<class T>
-void radixsort(T vector[], int length) { 
+void radixSort(T vector[], int length) { 
     // encuentra el numero mayor para conocer el numero de digitos
-    int max = getMax(vector, length); 
+    T max = getMax(vector, length); 
   
     // Hace countingSort por cada digito. Notar que en vez de 
     // pasar el numero del digito, exp es pasado. exp es 10^i 
@@ -122,7 +124,7 @@ void radixsort(T vector[], int length) {
     for (int exp = 1; max/exp > 0; exp *= 10) 
         countSort(vector, length, exp); 
 }//radixSort()
-//FIN DE COUNTINGSORT Y RADIXSORT ADAPTADOS
+//FIN DE COUNTINGSORT Y RADIXSORT ADAPTADOS*/
 
 template<class T>
 void shellSort(T vector[], int length) {

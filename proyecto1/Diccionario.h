@@ -8,76 +8,92 @@
 #include <cmath>
 #include <ctime>
 #include <Windows.h>
+#include "Palabra.h"
+#include <ctype.h>
 
 class Diccionario {
-	char palabras[10][23];
+	Palabra palabras[10]; //cambiar esto, ahora mi vector sera lineal, porque palabras es un string de 23
 	int totalPalabras;
 	bool ordenado;
 	
 	public:
-		
+
 		Diccionario(char *nomArchivo) {
 			//Archivo<char **> arc = Archivo(nomArchivo);
+			totalPalabras = 0;
+			cargarPalabras(nomArchivo);
+		}//Diccionario()
+		
+		Diccionario(int totalPalabras, Palabra *palabras) {
+			this->totalPalabras = totalPalabras;
+			for (int i = 0; i < totalPalabras; i++)
+				this->palabras[i] = palabras[i];
+				
+			ordenado = false;
+		}
+		
+		int getTotalPalabras() { return totalPalabras; }
+		
+		Palabra getPalabra(int pos) {
+			return palabras[pos];
+		}
+		
+		char* getTextoPalabra(int pos) {
+			return palabras[pos].getTexto();
+		}
+		
+		void cargarPalabras(char *nomArchivo) {
 			fstream arch;
 			arch.open(nomArchivo, ios::out | ios::in);
-			totalPalabras = 0;
 			ordenado = false;
 			if (!arch.fail()) {
 				while (!arch.eof()) {
 					char reg[23];
 					arch.getline(reg, 23, '\n');
+					
 					if (!arch.eof()) {
-						strcpy(palabras[totalPalabras], reg);
+						for (int j = 0; j < sizeof(reg)/sizeof(char); j++)
+							reg[j] = tolower(reg[j]);
+						
+						palabras[totalPalabras].setTexto(reg);
 						totalPalabras += 1;
 					}
 				}//while
-				
 			}//if no fallo
 			else {
-				cout<<"fallo al abrir el archivo"<<endl;
+				cout<<"Fallo al abrir el archivo"<<endl;
 			}
 			
-			arch.close();
-		}//Diccionario()
+			if (arch.is_open())
+				arch.close();
+		}//cargarPalabras
 		
-		Diccionario(int totalPalabras, char **palabras) {
-			this->totalPalabras = totalPalabras;
-			for (int i = 0; i < totalPalabras; i++)
-				strcpy(this->palabras[i], palabras[i]);
-				
-			ordenado = false;
-		}
-		
-		void anyadirPalabra() {  }
-		int getTotalPalabras() { return totalPalabras; }
-		void guardar() {
-			fstream arch;
-			arch.open("Diccionario2.txt");
+		void guardarPalabras(char *nomArchivo) {
+			fstream arch2;
+			arch2.open(nomArchivo, ios::out);
 			
-			arch.close();
-		}
-		
-		char* getPalabra(int pos) {
-			return palabras[pos];
-		}
-		
-		int encontrarPalabra(char* clave) {
-			int pos = -1;
-			//hace el metodo de busqueda
-			return pos;
+			if(!arch2.fail())
+				for (int i = 0; i < totalPalabras; i++)
+					arch2<<palabras[i].getTexto()<<endl;
+				
+			if (arch2.is_open())
+				arch2.close();
 		}
 		
 		void desordenarPalabras() {
 			int i;
 			srand(time(NULL));
 			int aux;
-			char copia[sizeof(palabras[0])/sizeof(palabras[0][0])];
+			Palabra copia[sizeof(palabras)/sizeof(palabras[0])];
+			
 			for (i = 0; i < totalPalabras; i++) {
 				aux = (rand()%totalPalabras);
-				strcpy(copia, palabras[i]);
-				strcpy(palabras[i], palabras[aux]);
-				strcpy(palabras[aux], copia);
+				intercambiar(palabras[i], palabras[aux]);
 			}//for
+			
+			guardarPalabras((char *)"desordenado.txt");
+			
+			ordenado = false;
 		}//desordenarPalabras
 		
 		void ordenar(int caso) {
@@ -95,24 +111,23 @@ class Diccionario {
 					seleccionDirecta(palabras, totalPalabras);
 					break;
 				case 5:
-					radixSort(palabras, totalPalabras);
+					//radixSort(palabras, totalPalabras);
 					break;
 				case 6:
 					shellSort(palabras, totalPalabras);
 					break;
 				default:
-					quickSort(palabras, totalPalabras);
+					quickSort(palabras, 0, totalPalabras - 1);
 					break;
 			}//switch(caso)
+			ordenado = true;
 		}//ordenar
 		
 		template<class T>
 		void buscar(int caso, T clave) {
 			if (!ordenado) {
 				ordenar(0); //quickSort
-				ordenado = true;
 			}
-
 			int pos;
 			switch(caso) {
 				case 1:
@@ -133,7 +148,8 @@ class Diccionario {
 				cout<<"Elemento encontrado en la pos "<<pos<<endl;
 			}
 			else
-				cout<<"No se encontro el elemento."
+				cout<<"No se encontro el elemento.";
+				
 		}//buscar
 		
 		~Diccionario() {}

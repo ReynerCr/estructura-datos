@@ -28,8 +28,9 @@ void imprimirArray(T vector[], int length) {
 }//imprimirArray()
 
 //funcion de utilidad para obtener el mayor valor de un vector
-int getMax(int vector[], int length) { 
-    int max = vector[0]; 
+template<class T>
+T getMax(T vector[], int length) { 
+    T max = vector[0]; 
     for (int i = 1; i < length; i++) 
         if (vector[i] > max) 
             max = vector[i]; 

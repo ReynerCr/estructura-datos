@@ -6,14 +6,19 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-	Diccionario dic((char *) "lista10.txt");
+	Diccionario dic((char *) "ordenada.txt");
 	dic.desordenarPalabras();
-	dic.ordenar(0); //quicksort
-	for (int i = 0; i < ; i++) {
-		cout<<dic.getPalabra(i)<<endl;
+
+	for (int i = 0; i < dic.getTotalPalabras(); i++) {
+		cout<<dic.getTextoPalabra(i)<<endl;
 	}//for
 	
+	dic.ordenar(1); //1 fallan
 	
+	cout<<endl<<endl<<"ordenados:"<<endl;
+	for (int i = 0; i < dic.getTotalPalabras(); i++) {
+		cout<<dic.getTextoPalabra(i)<<endl;
+	}//for
 	
 	cout<<endl<<"Total de palabras: "<<dic.getTotalPalabras()<<endl;
 	cout<<"Presione una tecla para salir.";
