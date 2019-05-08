@@ -1,5 +1,6 @@
-#include <math.h>
+//ordenamiento.h
 #include "utilidades.h"
+#include <cmath>
 
 using namespace std;
 

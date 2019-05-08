@@ -4,7 +4,7 @@
 #include <string.h>
 
 class Palabra {
-	char texto[23]; //en espanyol, las palabras con mas letras tienen 23
+	char texto[24]; //en espanyol, las palabras con mas letras tienen 23
 		
 	public:
 		Palabra() {
@@ -14,10 +14,9 @@ class Palabra {
 			strcpy(this->texto, texto);
 		}
 		
-		
 		void operator= (Palabra &obj) {
 			strcpy(this->texto, obj.getTexto());
-		}//NO SE
+		}
 		
 		bool operator==(Palabra& obj);
 		bool operator>(Palabra& obj);

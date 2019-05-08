@@ -1,27 +1,101 @@
+//main.cpp
 #include <ctype.h>
 #include <iostream>
 #include "Diccionario.h"
-#include <fstream>
+#include "Palabra.h"
+#include <cmath>
 
 using namespace std;
 
 int main(int argc, char** argv) {
 	Diccionario dic((char *) "ordenada.txt");
+	int tiempo;
+	clock_t t;
+	cout<<"Algoritmos de ordenamiento y busqueda."<<endl<<endl;
+	cout<<"TotalPalabras: "<<dic.getTotalPalabras()<<endl<<endl;
+	
+	cout<<"Desordenar y guardar en otro archivo:..."<<endl;
 	dic.desordenarPalabras();
-
-	for (int i = 0; i < dic.getTotalPalabras(); i++) {
-		cout<<dic.getTextoPalabra(i)<<endl;
-	}//for
+	cout<<"Listo"<<endl<<endl;
 	
-	dic.ordenar(1); //1 fallan
+	int i = 1;
+	while (i < 8) {
+		switch (i) {
+			case 1:
+				cout<<"Burbuja optima:..."<<endl;
+				break;
+			case 2:
+				cout<<"ShakerSort:..."<<endl;
+				break;
+			case 3:
+				cout<<"Insercion directa:..."<<endl;
+				break;
+			case 4:
+				cout<<"Seleccion directa:..."<<endl;
+				break;
+			case 5:
+				cout<<"RadixSort (NO IMPLEMENTADO):..."<<endl;
+				break;
+			case 6:
+				cout<<"ShellSort:..."<<endl;
+				break;
+			default:
+				cout<<"QuickSort:..."<<endl;
+				break;
+		}//switch(i)
+		t = clock();
+		dic.ordenar(i);
+		t = clock() - t;
+		
+		cout<<"FINALIZADO EN "<<(((float)t)/CLOCKS_PER_SEC)<<"SEGUNDOS, "
+		<<(float)((((float) t)/CLOCKS_PER_SEC)/(pow(10, 6)))<<" MICROSEGUNDOS, O "
+		<<(double)((((float) t)/CLOCKS_PER_SEC)/(pow(10, 9)))<<" NANOSEGUNDOS"<<endl;
+		
+		i++;
+		
+		cout<<endl<<"-------------------------------------------"<<endl<<endl; //separador
+		cout<<"Cargando palabras de archivo desordenado: "<<endl;
+		dic.cargarPalabras((char *)"desordenado.txt");
+		cout<<"LISTO"<<endl;
+		cout<<endl<<"-------------------------------------------"<<endl<<endl;
+	}//while para probar los algoritmos de ordenamiento
+	i = 0;
+	char palp[24];
+	Palabra pal;
+	while (i < 4) {
+		switch(i) {
+			case 1:
+				cout<<"Busqueda binaria: "<<endl;
+				break;
+			case 2:
+				cout<<"Hashing con funcion plegamiento(NO IMPLEMENTADO): "<<endl;
+				break;
+			case 3:
+				cout<<"Hashing espacio libre(NO IMPLEMENTADO): "<<endl;
+				break;
+			default:
+				cout<<"Busqueda linea por bloque: "<<endl;
+				break;
+		}//switch(caso)
+		
+		cout<<endl<<"Que elemento desea buscar?   ";
+		cin.sync();
+		cin.getline(palp, 24);
+		pal.setTexto(palp);
+		
+		t = clock();
+		dic.buscar(i, pal);
+		t = clock() - t;
+		
+		cout<<"FINALIZADO EN "<<(((float)t)/CLOCKS_PER_SEC)<<" SEGUNDOS, "
+		<<((((float) t)/CLOCKS_PER_SEC)/(pow(10, 6)))<<" MICROSEGUNDOS, O "
+		<<((((float) t)/CLOCKS_PER_SEC)/(pow(10, 9)))<<" NANOSEGUNDOS"<<endl;
+		
+		i++;
+		cout<<endl<<"-------------------------------------------"<<endl<<endl; //separador
+	}//while para probar los algoritmos de busqueda
 	
-	cout<<endl<<endl<<"ordenados:"<<endl;
-	for (int i = 0; i < dic.getTotalPalabras(); i++) {
-		cout<<dic.getTextoPalabra(i)<<endl;
-	}//for
-	
-	cout<<endl<<"Total de palabras: "<<dic.getTotalPalabras()<<endl;
-	cout<<"Presione una tecla para salir.";
+	cout<<endl<<"Presione una tecla para salir.";
 	getchar();
 	return 0;
 }//int main

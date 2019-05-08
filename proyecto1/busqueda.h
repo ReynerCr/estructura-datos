@@ -1,3 +1,5 @@
+//busqueda.h
+
 template<class T>
 int busquedaLinealSimple(T vector[], int length, T buscar) { //cuando el array esta ordenado, no necesariamente finaliza en la ultima posicion
 	int i = 0;
@@ -43,10 +45,22 @@ int busquedaLinealBloque(T vector[], int length, T buscar) {
 	return j;
 }//busquedaLinealBloque()
 
-//HACER
 template<class T>
-int busquedaBinaria(T vector[], int length, T buscar) {
-
+int busquedaBinaria(T vector[], int length, T clave) {
+	int r = length-1, l = 0, m;
+	
+	while (l <= r) {
+		m = (r + l)/2;
+	  	
+		if (vector[m] == clave)
+			return m;
+		else if (clave < vector[m])
+			r = m - 1;
+		else
+			l = m + 1;
+	}//while
+	
+	return -1;
 }//busquedaBinaria()
 
 //HACER
