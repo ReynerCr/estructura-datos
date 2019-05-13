@@ -11,8 +11,8 @@ int main(int argc, char** argv) {
 	Diccionario dic((char *) "ordenada.txt");
 	int tiempo;
 	clock_t t;
-	cout<<"Algoritmos de ordenamiento y busqueda."<<endl<<endl;
-	cout<<"TotalPalabras: "<<dic.getTotalPalabras()<<endl<<endl;
+	cout<<"Metodos de ordenamiento y busqueda."<<endl<<endl;
+	cout<<"Total de palabras: "<<dic.getTotalPalabras()<<endl<<endl;
 	
 	cout<<"Desordenar y guardar en otro archivo:..."<<endl;
 	dic.desordenarPalabras();
@@ -47,9 +47,9 @@ int main(int argc, char** argv) {
 		dic.ordenar(i);
 		t = clock() - t;
 		
-		cout<<"FINALIZADO EN "<<(((float)t)/CLOCKS_PER_SEC)<<"SEGUNDOS, "
-		<<(float)((((float) t)/CLOCKS_PER_SEC)/(pow(10, 6)))<<" MICROSEGUNDOS, O "
-		<<(double)((((float) t)/CLOCKS_PER_SEC)/(pow(10, 9)))<<" NANOSEGUNDOS"<<endl;
+		cout<<"FINALIZADO EN "<<(((float)t)/CLOCKS_PER_SEC)<<" SEGUNDOS, "
+		<<((((float) t)/CLOCKS_PER_SEC)*(1000))<<" MILISEGUNDOS, O "
+		<<(double)((((float) t)/CLOCKS_PER_SEC)*(pow(10, 9)))<<" NANOSEGUNDOS"<<endl;
 		
 		i++;
 		
@@ -88,8 +88,8 @@ int main(int argc, char** argv) {
 		t = clock() - t;
 		
 		cout<<"FINALIZADO EN "<<(((float)t)/CLOCKS_PER_SEC)<<" SEGUNDOS, "
-		<<((((float) t)/CLOCKS_PER_SEC)/(pow(10, 6)))<<" MICROSEGUNDOS, O "
-		<<((((float) t)/CLOCKS_PER_SEC)/(pow(10, 9)))<<" NANOSEGUNDOS"<<endl;
+		<<((((float) t)/CLOCKS_PER_SEC)*(1000))<<" MILISEGUNDOS, O "
+		<<(double)((((float) t)/CLOCKS_PER_SEC)*(pow(10, 9)))<<" NANOSEGUNDOS"<<endl;
 		
 		i++;
 		cout<<endl<<"-------------------------------------------"<<endl<<endl; //separador

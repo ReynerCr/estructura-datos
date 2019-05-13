@@ -26,13 +26,3 @@ void imprimirArray(T vector[], int length) {
 	}//for i
 	cout << endl;
 }//imprimirArray()
-
-//funcion de utilidad para obtener el mayor valor de un vector
-template<class T>
-T getMax(T vector[], int length) { 
-    T max = vector[0]; 
-    for (int i = 1; i < length; i++) 
-        if (vector[i] > max) 
-            max = vector[i]; 
-    return max; 
-}//getMax()

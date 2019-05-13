@@ -1,16 +1,31 @@
 //Diccionario.h
 #ifndef DICCIONARIO_H
 #define DICCIONARIO_H
-#include <fstream>
+
 #include <string.h>
-#include "ordenamiento.h"
-#include "busqueda.h"
-#include "Palabra.h"
-#include <ctype.h>
 #include <iostream>
+#include <fstream>
 #include <ctype.h>
 #include <time.h>
-#include <Windows.h>
+#include "Palabra.h"
+#include "utilidades.h"
+#include <Windows.h>   //tiempo en Windows
+
+//ordenamiento:
+#include "ordenamiento/burbBand.h"
+#include "ordenamiento/insDir.h"
+#include "ordenamiento/quicksort.h"
+#include "ordenamiento/radixsort.h"
+#include "ordenamiento/selDir.h"
+#include "ordenamiento/shellsort.h"
+#include "ordenamiento/shakesort.h"
+//busqueda:
+#include "busqueda/busqBin.h"
+#include "busqueda/busqLinbloq.h"
+#include "busqueda/hashEspLib.h"
+#include "busqueda/hashPleg.h"
+
+using namespace std;
 
 class Diccionario {
 	Palabra *palabras; //creo que operator= no me deja crear objetos dinamicos
@@ -116,25 +131,25 @@ class Diccionario {
 		void ordenar(int caso) {
 			switch(caso) {
 				case 1:
-					burbujaOptima(palabras, totalPalabras);
+					burbBand(palabras, totalPalabras);
 					break;
 				case 2:
-					shakerSort(palabras, totalPalabras);
+					shakesort(palabras, totalPalabras);
 					break;
 				case 3:
-					insercionDirecta(palabras, totalPalabras);
+					insDir(palabras, totalPalabras);
 					break;
 				case 4:
-					seleccionDirecta(palabras, totalPalabras);
+					selDir(palabras, totalPalabras);
 					break;
 				case 5:
-					//radixSort(palabras, totalPalabras);
+					//radixsort(palabras, totalPalabras);
 					break;
 				case 6:
-					shellSort(palabras, totalPalabras);
+					shellsort(palabras, totalPalabras);
 					break;
 				default:
-					quickSort(palabras, 0, totalPalabras - 1);
+					quicksort(palabras, 0, totalPalabras - 1);
 					break;
 			}//switch(caso)
 			ordenado = true;
@@ -148,16 +163,16 @@ class Diccionario {
 			int pos;
 			switch(caso) {
 				case 1:
-					pos = busquedaBinaria(palabras, totalPalabras, clave);
+					pos = busqBin(palabras, totalPalabras, clave);
 					break;
 				case 2:
-					//pos = hashFuncPlegamiento(palabras, totalPalabras, clave);
+					//pos = hashPleg(palabras, totalPalabras, clave);
 					break;
 				case 3:
-					//pos = hashEspacioLibre(palabras, totalPalabras, clave);
+					//pos = hashEspLib(palabras, totalPalabras, clave);
 					break;
 				default:
-					pos = busquedaLinealBloque(palabras, totalPalabras, clave);
+					pos = busqLinBloq(palabras, totalPalabras, clave);
 					break;
 			}//switch(caso)
 
