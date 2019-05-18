@@ -27,9 +27,9 @@ CommandLine=
 Folders=
 IncludeVersionInfo=0
 SupportXPThemes=0
-CompilerSet=1
-CompilerSettings=0000000000000000001000000
-UnitCount=5
+CompilerSet=0
+CompilerSettings=0000000000000000000000000
+UnitCount=8
 
 [VersionInfo]
 Major=1
@@ -100,8 +100,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit9]
-FileName=Palabra.cpp
+[Unit6]
+FileName=TablaLetrasEs.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -110,8 +110,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit6]
-FileName=Palabra.h
+[Unit8]
+FileName=algoritmos.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -121,7 +121,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit7]
-FileName=Palabra.cpp
+FileName=archivo.h
 CompileCpp=1
 Folder=
 Compile=1

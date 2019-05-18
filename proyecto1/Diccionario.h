@@ -2,46 +2,38 @@
 #ifndef DICCIONARIO_H
 #define DICCIONARIO_H
 
-#include <string.h>
 #include <iostream>
-#include <fstream>
 #include <ctype.h>
 #include <time.h>
 #include "Palabra.h"
+#include "archivo.h"
 #include "utilidades.h"
 #include <Windows.h>   //tiempo en Windows
-
-//ordenamiento:
-#include "ordenamiento/burbBand.h"
-#include "ordenamiento/insDir.h"
-#include "ordenamiento/quicksort.h"
-#include "ordenamiento/radixsort.h"
-#include "ordenamiento/selDir.h"
-#include "ordenamiento/shellsort.h"
-#include "ordenamiento/shakesort.h"
-//busqueda:
-#include "busqueda/busqBin.h"
-#include "busqueda/busqLinbloq.h"
-#include "busqueda/hashEspLib.h"
-#include "busqueda/hashPleg.h"
+#include "algoritmos.h"
+#include "TablaLetrasEs.h"
 
 using namespace std;
 
 class Diccionario {
-	Palabra *palabras; //creo que operator= no me deja crear objetos dinamicos
+	Palabra *palabras;
 	int totalPalabras;
 	bool ordenado;
-	
+	archivo<char*>*arch;
+	TablaLetrasEs tabla;
+
 	public:
 		Diccionario(char *nomArchivo) {
 			totalPalabras = 0;
+			tabla = TablaLetrasEs();
+			arch = new archivo<char*>(nomArchivo);
 			numeroLineas(nomArchivo);
 			palabras = new Palabra[totalPalabras];
 			cargarPalabras(nomArchivo);
 		}//Diccionario()
-		
+
 		Diccionario(int totalPalabras, Palabra *palabras) {
 			this->totalPalabras = totalPalabras;
+			tabla = TablaLetrasEs();
 			for (int i = 0; i < totalPalabras; i++) {
 				this->palabras[i] = palabras[i];
 			}
@@ -61,32 +53,20 @@ class Diccionario {
 		
 		//recorre todo el archivo para conocer el numero de lineas del mismo
 		void numeroLineas(char *nomArchivo) {
-			fstream arch;
-			arch.open(nomArchivo, ios::in);
-			if(!arch.fail()) {
-				while (!arch.eof()) {
-					totalPalabras++;
-					arch.ignore(24, '\n');
-				}
-				totalPalabras--;
-			}//arch.fail
+			totalPalabras = arch->getTam();
 		}//numeroLineas()
 
 		void cargarPalabras(char *nomArchivo) {
-			fstream arch;
-			arch.open(nomArchivo, ios::out | fstream::in);
 			ordenado = false;
 			int i = 0;
-			if (!arch.fail()) {
-				while (!arch.eof()) {
+			arch->abrir();
+			if (!arch->falla()) {
+				while (!arch->esFin()) {
 					char reg[24];
-					arch.getline(reg, 24, '\n');
-					
-					if (!arch.eof()) {
-						for (int j = 0; j < 24 && reg[j] != '\0'; j++) {
-							reg[j] = tolower(reg[j]);
-						}//for
-						palabras[i].setTexto(reg);
+					arch->leer(reg);
+										
+					if (!arch->esFin()) {
+						palabras[i].setTexto(reg, &tabla);
 							
 						i++;
 					}
@@ -96,20 +76,17 @@ class Diccionario {
 			else 
 				cout<<"Fallo al abrir el archivo"<<endl;
 			
-			if (arch.is_open())
-				arch.close();
+			if (arch->estaAbierto())
+				arch->cerrar();
 		}//cargarPalabras
 		
 		void guardarPalabras(char *nomArchivo) {
-			fstream arch2;
-			arch2.open(nomArchivo, ios::out);
-			
-			if(!arch2.fail())
+			arch->abrir();
+			if(!arch->falla())
 				for (int i = 0; i < totalPalabras; i++)
-					arch2<<palabras[i].getTexto()<<endl;
-				
-			if (arch2.is_open())
-				arch2.close();
+					arch->escribir(palabras[i].getTexto(), 23);
+			if(arch->estaAbierto())
+				arch->cerrar();
 		}//guardarPalabras()
 		
 		void desordenarPalabras() {
@@ -185,6 +162,7 @@ class Diccionario {
 		
 		~Diccionario() {
 			delete[] palabras;
+			delete arch;
 		}
 };
 

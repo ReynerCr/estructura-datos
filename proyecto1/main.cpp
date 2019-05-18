@@ -4,10 +4,14 @@
 #include "Diccionario.h"
 #include "Palabra.h"
 #include <cmath>
+#include "TablaLetrasEs.h"
 
 using namespace std;
 
 int main(int argc, char** argv) {
+	TablaLetrasEs tabla = TablaLetrasEs();
+	
+	cout<<"Voy a cargar datos: "<<endl;
 	Diccionario dic((char *) "ordenada.txt");
 	int tiempo;
 	clock_t t;

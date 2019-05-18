@@ -24,5 +24,5 @@ void imprimirArray(T vector[], int length) {
 	for (i = 0; i < length; i++) {
 		 cout<<vector[i]<<" | ";
 	}//for i
-	cout << endl;
+	cout<<endl;
 }//imprimirArray()
