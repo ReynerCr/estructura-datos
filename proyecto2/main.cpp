@@ -96,9 +96,6 @@ Materia buscarMateria(int codigo) {
 			obj.Cerrar();
 		}
 	}//si buscarCarrera es verdadero
-	else {
-		cout<<"No existe ni la carrera a la que se supone debe pertener la materia."<<endl;
-	}
 	
 	if (!encontrado)
 		mat = Materia(0, 0, (char*)"", 0);
@@ -115,11 +112,11 @@ void agregarAlumno()
 	
 	unsigned int ced;
 	int cedd;
-	cin.sync();
 	cout<<"|--------------------<Nuevo alumno>----------------------|"<<endl;
 	cout<<"Ingrese cedula: "; cin>>cedd;
 	ced = cedd;
-	if (cedd > 0 && ced < 40000000) {
+	if (!cin.fail() && cedd > 0 && ced < 40000000)
+	{
 		if (!obj1.Falla())
 		{
 			Alumno alumno;
@@ -135,8 +132,7 @@ void agregarAlumno()
 				Carrera carr = buscarCarrera(alumno.getCarrera());
 				if (carr.getCodigo() != 0)
 				{
-					obj1.EscribirBi(alumno); //Aqui está el error al escribir
-					//obj1.Ordenar(); Esto no hace nada, deberia pero no hace nada.
+					obj1.EscribirBi(alumno);
 					cout<<"Alumno registrado satisfactoriamente."<<endl;
 				}
 				else
@@ -155,6 +151,7 @@ void agregarAlumno()
 	}//if ced ingresada es un numero mayor a 0 y menor a 40000000
 	else
 	{
+		cin.clear();
 		cout<<"No es una cedula valida. Cedula debe ser un numero entre 0 y 40000000."<<endl;
 	}
 	
@@ -229,9 +226,10 @@ void inscripcion()
 	int auxI = ced;
 	cout<<"|--------------------<Inscripcion alumno>-------------------|"<<endl;
 	cout<<"Ingrese la cedula: "; cin>>ced;
-	if (auxI < 0 || ced >= 40000000)
+	if (cin.fail() || auxI < 0 || ced >= 40000000)
 	{
 		cout<<"No es una cedula valida. Cedula debe ser un numero entre 0 y 40000000."<<endl;
+		cin.clear();
 	}//si cedula no es valida
 	else
 	{
@@ -270,11 +268,13 @@ void inscripcion()
 						int sumUC = 0;
 						auxI = 0;
 						do {
-							cin.sync();
-							cout<<"-"; cin.getline(aux2, 4, '\n');
-							if (atoi(aux2) >= 100)
+							cin.ignore(1000, '\n');
+							cout<<auxI<<". "; cin.getline(aux2, 4, '\n');
+							if (cin.fail() || atoi(aux2) >= 100)
 							{
 								cout<<"Codigo no valido."<<endl<<endl;
+								cin.clear();
+								cin.ignore(1000, '\n');
 							}//codigo no valido
 							else
 							{
@@ -327,8 +327,13 @@ void inscripcion()
 							cout<<"UC inscritas hasta el momento: "<<sumUC<<endl;
 							if (sumUC < 12)
 							{
-								cout<<"Desea continuar con la inscripcion? 0=no, 1=si    Respuesta:";
-								cin>>ced; //reutilizo ced como auxiliar
+								cout<<"Desea continuar con la inscripcion? 0=no, 1=si    Respuesta: ";
+								while(!(cin>>ced) || (ced != 0  && ced != 1))
+								{
+									cin.clear();
+  									cin.ignore(1000, '\n');
+  									cout<<"Respuesta no valida, reingrese: ";
+								} //reutilizo ced como auxiliar
 								cout<<endl<<endl;
 							}
 							else
@@ -363,7 +368,12 @@ void inscripcion()
 							cout<<"Datos del alumno: "<<insc<<endl<<endl;
 							cout<<"Esta seguro de que desea continuar con la inscripcion?"<<endl 
 								<<"0=no   1=si    Respuesta:";
-							cin>>ced;
+							while (!(cin>>ced) || (ced != 0 && ced != 1))
+							{
+								cin.clear();
+  								cin.ignore(1000, '\n');
+  								cout<<"Respuesta no valida, reingrese: ";	
+							}
 							if (ced == 1)
 							{
 								obj.EscribirBi(insc);
@@ -418,7 +428,7 @@ void consultarInscripcion(int cedd)
 		Inscrito insc(ced, (char*)"", 0);
 		Archivo<Inscrito>obj((char*)"Inscritos.dat", transfInscrito);
 		obj.AbrirT(ios::in|ios::binary);
-		
+
 		if (obj.Buscar_Simple(insc))
 		{
 			cout<<insc<<endl;
@@ -434,7 +444,7 @@ void consultarInscripcion(int cedd)
 				cout<<"Alumno no registrado."<<endl;
 			}
 		}//else no consiguio alumno en Inscritos.dat
-		
+
 		if (obj.EstaAbierto())
 			obj.Cerrar(); 
 	}//if cedula es valida
@@ -524,8 +534,8 @@ int main(int argc, char** argv) {
 		cout<<"|-<Salir>-----------------------------------------<|8|>|"<<endl;
 		cout<<"|-------------<Que operación requiere?>----------------|"<<endl;	
 		cout<<"Opcion: "; cin>>ban;
-		cout<<endl;
 		
+		cout<<endl;
 		switch(ban)
 		{
 			case 1: //Agregar alumno
@@ -536,21 +546,30 @@ int main(int argc, char** argv) {
 				cout<<"Ingrese cedula a buscar: ";
    				cin>>aux;
    				cout<<endl;
-				consultarAlumno(aux);
+   				if (!cin.fail())
+   				{
+   					consultarAlumno(aux);
+				}
 			break;
 			
 			case 3: //Consultar materia
 				cout<<"Ingrese codigo de la asignatura que desea consultar: ";
 				cin>>aux;
 				cout<<endl;
-				consultarAsignatura(aux);
+				if (!cin.fail())
+   				{
+   					consultarAsignatura(aux);
+				}
 			break;
 			
 			case 4:
 				cout<<"Ingrese codigo de la carrera a consultar: ";
 				cin>>aux;
 				cout<<endl;
-				pensumCarrera(aux);
+				if (!cin.fail())
+   				{
+   					pensumCarrera(aux);
+				}
 			break;
 			
 			case 5: //Inscripcion de nuevo alumno
@@ -561,7 +580,10 @@ int main(int argc, char** argv) {
 				cout<<"Ingrese cedula del alumno del que desea consultar la inscripcion: ";
 				cin>>aux;
 				cout<<endl;
-				consultarInscripcion(aux);
+				if (!cin.fail())
+   				{
+   					consultarInscripcion(aux);
+				}
 			break;
 			
 			case 7: //Lista de alumnos inscritos en una asignatura
@@ -569,7 +591,10 @@ int main(int argc, char** argv) {
 					<<"inscritos: "<<endl;
 				cin>>aux;
 				cout<<endl;
-				consultInscAsig(aux);
+				if (!cin.fail())
+   				{
+   					consultInscAsig(aux);
+				}
 			break;
 				
 			case 8: //Salir
@@ -580,8 +605,16 @@ int main(int argc, char** argv) {
 				cout<<"|-----<No es una opcion valida, ingrese de nuevo.>-----|"<<endl;
 			break;
 		}//switch(band)
-		cout<<endl<<"Presione cualquier tecla para volver al menu.";
-		cin.sync();
+		if (cin.fail())
+		{
+			cin.clear();
+			cout<<"Entrada no valida, regresara al menu."<<endl;
+		}
+		if (ban != 8)
+		{
+			cout<<endl<<"Presione cualquier tecla para volver al menu.";
+		}
+		cin.ignore(1000, '\n');
 		cin.get();
 	}while(ban!=8);	
 	return 0;

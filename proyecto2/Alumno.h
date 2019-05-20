@@ -27,9 +27,23 @@ class Alumno {
 		
 		void cargarAlumno()
 		{
-			cout<<"Ingrese Nombre: ";cin.sync();cin.getline(this->nombre,45);
-			cout<<"Ingrese codigo de carrera: ";cin.sync();cin>>this->codCarrera;
-		}
+			cout<<"Ingrese Nombre: ";
+			cin.ignore(1000, '\n');
+			while (!(cin.getline(this->nombre,45)))
+			{
+				cout<<"Entrada no valida, reingrese: ";
+				cin.clear();
+  				cin.ignore(1000, '\n');
+			} while (cin.fail());
+			
+			cout<<"Ingrese codigo de carrera: ";
+			while (!(cin>>this->codCarrera))
+			{
+				cout<<"Entrada no valida, reingrese: ";
+				cin.clear();
+  				cin.ignore(1000, '\n');
+			} while (cin.fail());
+		}//void cargarAlumno()
 		
 		~Alumno() {}
 		
