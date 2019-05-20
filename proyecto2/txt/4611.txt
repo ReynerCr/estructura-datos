@@ -1,0 +1,40 @@
+1-461101-Matemática I-4
+1-461102-Computación I-3
+1-461103-Lenguaje y comunicación-2
+1-461104-Matemática discreta-3
+2-461105-Matemática II-4
+2-461106-Física I-4
+2-461107-Programación I-4
+2-461108-Química I-3
+3-461109-Matemática III-4
+3-461110-Física II-4
+3-461111-Teoría general de sistemas-2
+3-461112-Estructuras de datos-4
+4-461113-Inglés I-2
+4-461114-Programación II-3
+4-461115-Ciencia y sociedad-1 
+4-461116-Fundamentos de lógica digital-3
+5-461117-Ciencia y sociedad-1
+5-461118-Base de datos I-3
+5-461119-Inglés II-2
+5-461120-Estadística I-3
+6-461121-Base de datos I-3
+6-461122-Métodos numéricos-3
+6-461123-Estadística II-3
+6-461124-Organización del computador-4
+7-461125-Sistemas de información I-3
+7-461126-Sistemas operativos-3 
+7-461127-Economía-2
+7-461128-Sistemas de información I-3
+8-461129-Base de datos II-3
+8-461130-Comunicaciones I-3
+8-461131-Compiladores e interpretres-3
+8-461132-Aprendizaje automático-2
+9-461133-Sistemas de información II-3
+9-461134-Comunicaciones II-3
+9-461135-Simulación de sistemas-3
+9-461136-Finanzas para ingenieros-2
+10-461137-Comunicaciones II-3
+10-461138-Pasantías-4
+10-461139-Trabajo de aplicación profesional-4
+10-461140-Seminario-3

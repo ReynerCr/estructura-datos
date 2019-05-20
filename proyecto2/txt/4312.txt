@@ -1,0 +1,41 @@
+1-431201-Matemática I-3
+1-431202-Química general I-4
+1-431203-Biología I-3
+1-431204-Lenguaje y comunicación-2 
+2-431205-Matemática II-3
+2-431206-Física I-3
+2-431207-Química general II-4
+2-431208-Laboratorio de química general I-3
+3-431209-Química generla III-4
+3-431210-Física II-3
+3-431211-Ciencia y sociedad I-2
+3-431212-Inglés I-2
+4-431213-Inglés II-2
+4-431214-Laboratorio de química general II-3
+4-431215-Fundamentos de Ing.Ambiental-4
+4-431216-Biología II-3
+5-431217-Motivación y creatividad-2
+5-431218-Laboratorio de física I-3
+5-431219-Matemática III-3
+5-431220-Biología III-4
+6-431221-Matemática IV-3
+6-431222-Termodinámica-4
+6-431223-Fundamentos de Ing.Ambiental II-4
+6-431224-Laboratorio de física II-3
+7-431225-Economía-2
+7-431226-Hidrología-3
+7-431227-Geoloía y suelos-3
+7-431228-Gerencia personal, y proyecto-2
+8-431229-Tratamientos químicos del agua-4
+8-431230-Gestión de residuos sólidos-3
+8-431231-Legislación ambiental-4
+8-431232-Conservación de suelos y agua-3
+9-431233-Contaminacíon de la atmósfera-3
+9-431234-Ciencia y sociedad II-2
+9-431235-Tratamientos físico del agua-4
+9-431236-Laboratorio ambiental I-4
+10-431237-Gestion ambiental-4
+10-431238-Sistemas de tratamientos de aguas-3
+10-431239-Laboratorio ambiental II-4
+10-431240-Proyecto especial de grado-4
+ 

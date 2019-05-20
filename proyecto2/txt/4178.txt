@@ -1,0 +1,40 @@
+1-417801-Matemática I-4
+1-417802-Dibujo I-3
+1-417803-Álgebra I-3
+1-417804-Educa.Salud fisica y deportes-2
+2-417805-Matemática II-4
+2-417806-Física I-4
+2-417807-Química I-3
+2-417808-Dibujo II-3
+3-417809-Matemática III-4
+3-417810-Física II-4
+3-417811-Geometria descriptiva-2
+3-417812-Dibujo proyectos I-3
+4-417813-Matemática IV-4
+4-417814-Ingles I-2
+4-417815-Topografia-3 
+4-417816-Mecanica de fluidos I-4
+5-417817-Resistencia de materiales II-4
+5-417818-Geologia-3 
+5-417819-Mecanica de fluidos II-4
+5-417820-Concreto I-4
+6-417821-Vias de comunicacion I-3
+6-417822-Estructura I-4
+6-417823-Concreto II-4
+6-417824-Metodologia de la investigacion I-2
+7-417825-Vias de comunicacion II-3
+7-417826-Estructura II-4
+7-417827-Pavimentos-3 
+7-417828-Hidrologia-3
+8-417829-Mantenimiento-2
+8-417830-Contruccion I-4
+8-417831-Proyecto de servicio comunitario-2 
+8-417832-Tecnica de construccion-3
+9-417833-Acueductos,cloacas y drenaje-4 
+9-417834-Concreto pretensado-4
+9-417835-Proyecto de investigacion-4
+9-417836-Pasantias-3
+10-417837-Etica y deontologia profesional-4
+10-417838-Higiene y seguridad industrial-3
+10-417839-Fundaciones y muros-4
+10-417840-Trabajo de grado-4

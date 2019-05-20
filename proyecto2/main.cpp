@@ -1,0 +1,589 @@
+//main.h
+/* AUTORES:
+ + Contreras Reyner C.I: V 26934400
+ + Llanes John C.I: V30853320
+*/
+
+#include <iostream>
+#include <windows.h>
+#include <wchar.h>
+#include <cstdlib>
+#include <locale.h>
+#include "Alumno.h"
+#include "Carrera.h"
+#include "Materia.h"
+#include "Archivo.h"
+#include "Inscrito.h"
+
+using namespace std;
+
+//FUNCIONES AUXLIARES
+Alumno buscarAlumno(unsigned int ced) {
+	Alumno al(ced, (char *)"", 0);
+	Archivo<Alumno>obj((char * )"Alumnos.dat", transfAlumno);
+	obj.AbrirT(ios::in|ios::binary);
+	bool encontrado = false;
+	
+	if (!obj.Falla())
+	{
+		encontrado = obj.Buscar_Simple(al);
+	}
+	else
+	{
+		cout<<"Hubo un problema al abrir Alumnos.dat"<<endl;
+	}
+	
+	if (obj.EstaAbierto())
+	{
+		obj.Cerrar();
+	}
+	
+	if(!encontrado)
+		al = Alumno(0, (char *)"", 0);
+	
+	return al;
+}//bool buscarAlumno(unsigned int)
+
+Carrera buscarCarrera(int codigo) {
+	Carrera carr(codigo, (char *)"");
+	
+	Archivo<Carrera>obj((char * )"Carrera.dat", transfCarrera);
+	obj.AbrirT(ios::in|ios::binary);
+	bool encontrado = false;
+	
+	if (!obj.Falla())
+	{
+		encontrado = obj.Buscar_Simple(carr);
+	}
+	else
+	{
+		cout<<"Hubo un problema al abrir Carrera.dat"<<endl;
+	}
+	
+	if (obj.EstaAbierto())
+	{
+		obj.Cerrar();
+	}
+	
+	if (!encontrado)
+		carr = Carrera(0, (char*)"");
+	return carr;
+}//bool buscarCarrera(int)
+
+Materia buscarMateria(int codigo) {
+	bool encontrado = false;
+	Materia mat(0, codigo, (char *)"", 0);
+	Carrera car = buscarCarrera(codigo/100);
+	
+	if (car.getCodigo() != 0) {
+		
+		char pal[15]; itoa((codigo/100), pal, 10);
+		strcat(pal, ".dat");
+		Archivo<Materia>obj((char *)pal, transfMateria);
+		obj.AbrirT(ios::in|ios::binary);
+		
+		if (!obj.Falla())
+		{
+			encontrado = obj.Buscar_Simple(mat);
+		}
+		else
+		{
+			cout<<"Hubo un problema al abrir "<<pal<<endl;
+		}
+		
+		if (obj.EstaAbierto())
+		{
+			obj.Cerrar();
+		}
+	}//si buscarCarrera es verdadero
+	else {
+		cout<<"No existe ni la carrera a la que se supone debe pertener la materia."<<endl;
+	}
+	
+	if (!encontrado)
+		mat = Materia(0, 0, (char*)"", 0);
+	return mat;
+}//bool buscarMateria(int)
+//FIN FUNCIONES AUXILIARES
+//-------------------------------------
+
+//FUNCIONES DEL SWITCH EN EL MAIN
+void agregarAlumno()
+{
+	Archivo<Alumno>obj1((char*)"Alumnos.dat", transfAlumno);
+	obj1.AbrirT(ios::in|ios::out|ios::binary|ios::app);
+	
+	unsigned int ced;
+	int cedd;
+	cin.sync();
+	cout<<"|--------------------<Nuevo alumno>----------------------|"<<endl;
+	cout<<"Ingrese cedula: "; cin>>cedd;
+	ced = cedd;
+	if (cedd > 0 && ced < 40000000) {
+		if (!obj1.Falla())
+		{
+			Alumno alumno;
+			alumno.setCedula(ced);
+		
+			if(obj1.Buscar_Simple(alumno))
+			{
+				cout<<"Cedula ya existe en el registro, volvera al menú."<<endl;
+			}
+			else
+			{
+				alumno.cargarAlumno();
+				Carrera carr = buscarCarrera(alumno.getCarrera());
+				if (carr.getCodigo() != 0)
+				{
+					obj1.EscribirBi(alumno); //Aqui está el error al escribir
+					//obj1.Ordenar(); Esto no hace nada, deberia pero no hace nada.
+					cout<<"Alumno registrado satisfactoriamente."<<endl;
+				}
+				else
+				{
+					cout<<"No existe una carrera con ese codigo, volvera al menu principal."<<endl;
+				}
+			}//else de cedula no registrada
+		}//if obj1 no fallo al abrir
+		else {
+			cout<<"Hubo un problema al abrir Alumnos.dat"<<endl;
+			if (obj1.EstaAbierto())
+					obj1.Cerrar();
+			obj1.AbrirT(ios::out|ios::binary);
+			obj1.Cerrar();
+		}
+	}//if ced ingresada es un numero mayor a 0 y menor a 40000000
+	else
+	{
+		cout<<"No es una cedula valida. Cedula debe ser un numero entre 0 y 40000000."<<endl;
+	}
+	
+	if (obj1.EstaAbierto())
+		obj1.Cerrar();
+}//agregarAlumno()
+
+void consultarAlumno(int cedd) {
+	unsigned int ced = cedd;
+	if (cedd < 0 || ced >= 40000000)
+	{
+		cout<<"No es una cedula valida. Cedula debe ser un numero entre 0 y 40000000."<<endl;
+	}//if cedula no es valida
+	else
+	{
+		Alumno alumno = buscarAlumno(ced);
+	    if(alumno.getCedula() != 0)
+		{
+			cout<<alumno<<endl;
+		}
+	    else
+		{
+		  cout<<"La cedula no se encuentra en el registro."<<endl;	
+		} 
+	}//else cedula es valida
+	
+}//void consultarAlumno()
+
+void consultarAsignatura(int codigo)
+{
+	Materia mat = buscarMateria(codigo);
+	if(mat.getCodigo() != 0)
+	{
+  		cout<<mat<<endl;
+	}
+	else
+	{
+		cout<<"La materia no se encuentra en el registro."<<endl;
+	}
+}//void consultarAsignatura(int)
+
+void pensumCarrera(int codigo)
+{
+	Carrera carrAux = buscarCarrera(codigo);
+	if (carrAux.getCodigo() != 0) {
+		char palabra[15];
+		itoa(codigo, palabra, 10);
+		strcat(palabra, ".dat");
+		Archivo<Materia>obj3((char *)palabra, transfMateria);
+		obj3.AbrirT(ios::binary|ios::in);
+		if (obj3.Falla())
+		{
+			cout<<"Hubo un problema al abrir"<<palabra<<endl;
+		}
+		else
+		{
+			obj3.MostrarBi();
+		}//si no fallo al abrir obj3
+		
+		if (obj3.EstaAbierto())
+			obj3.Cerrar();
+	}
+	else
+	{
+		cout<<"Carrera no existe en los registros."<<endl;
+	}//si no consiguio el codigo de carrera
+}//void pensumCarrera(int);
+
+void inscripcion()
+{
+	unsigned int ced;
+	int auxI = ced;
+	cout<<"|--------------------<Inscripcion alumno>-------------------|"<<endl;
+	cout<<"Ingrese la cedula: "; cin>>ced;
+	if (auxI < 0 || ced >= 40000000)
+	{
+		cout<<"No es una cedula valida. Cedula debe ser un numero entre 0 y 40000000."<<endl;
+	}//si cedula no es valida
+	else
+	{
+		Alumno alumn = buscarAlumno(ced);
+		if (alumn.getCedula() != 0)
+		{
+			Carrera carr = buscarCarrera(alumn.getCarrera());
+			if (carr.getCodigo() != 0)
+			{
+				cout<<endl<<"Estudiante de "<<carr.getNombreC()<<"."<<endl;
+				Archivo<Inscrito>obj((char *)"Inscritos.dat", transfInscrito);
+				Inscrito insc(ced, (char*)"", 0);
+				obj.AbrirT(ios::in|ios::out|ios::app|ios::binary);
+				if (!obj.Falla() && !obj.Buscar_Simple(insc))
+				{
+					char aux[10], aux2[4], materias[7][3];
+					//de aqui en adelante auxI sera un contador para el numero de materias incritas
+					//ced se utilizara como un auxiliar mas
+					for (auxI = 0; auxI < 7; auxI++)
+					{
+						materias[auxI][2] = '\0';
+					}
+					itoa(carr.getCodigo(), aux, 10);
+					strcat(aux, ".dat");
+					Archivo<Materia>obj2((char*)aux, transfMateria);
+					obj2.AbrirT(ios::in|ios::binary);
+					if (!obj2.Falla())
+					{
+						Materia mat = Materia();
+						cout<<"Ingrese los ultimos dos digitos de los codigos de las "
+							<<"asignaturas que vaya a registrar, pulsando enter entre cada "
+							<<"materia."<<endl<<endl;
+						cout<<"Recuerde que minimo debe inscribir 3 UC, y maximo 12 UC."<<endl
+							<<"Maximo de asignaturas que puede inscribir es de 7."<<endl<<endl<<endl;
+						
+						int sumUC = 0;
+						auxI = 0;
+						do {
+							cin.sync();
+							cout<<"-"; cin.getline(aux2, 4, '\n');
+							if (atoi(aux2) >= 100)
+							{
+								cout<<"Codigo no valido."<<endl<<endl;
+							}//codigo no valido
+							else
+							{
+								aux[0] = '\0';
+								itoa(carr.getCodigo(), aux, 10);
+								strcat(aux, aux2);
+								mat.setCodigo(atoi(aux));
+								if (obj2.Buscar_Simple(mat))
+								{
+									if (sumUC + mat.getUC() <= 12 && auxI < 7)
+									{
+										ced = 0;
+										while(ced < auxI)
+										{
+											if (strcmp(aux2, materias[ced]) == 0)
+											{
+												break;
+											}
+											ced++;
+										}//while para comprobar que no se repita mat inscrita
+										if (ced == auxI)
+										{
+											sumUC += mat.getUC();
+											strcpy(materias[auxI], aux2);
+											cout<<"Inscrita."<<endl;
+											auxI++;
+										}//if materia no se repite en liste
+										else
+										{
+											cout<<"Materia ya cargada en la lista para inscribir."<<endl;
+										}//else materia se repitio en lista
+									}//if sumatoria de uc < 12
+									else if (auxI >= 7)
+									{
+										cout<<"Limite de materias a inscribir es de 7."<<endl;
+										break;
+									}//si sumUC > 12
+									else
+									{
+										cout<<"No se pudo inscribir esa materia debido a que "
+											<<"la sumatoria de UC seria mayor a 12."<<endl;
+									}
+								}//materia encontrada
+								else
+								{
+									cout<<"No existe esa materia."<<endl;	
+								}//no encontrada materia
+							}//cuando codigo es valido (codigo<100)
+							
+							cout<<"UC inscritas hasta el momento: "<<sumUC<<endl;
+							if (sumUC < 12)
+							{
+								cout<<"Desea continuar con la inscripcion? 0=no, 1=si    Respuesta:";
+								cin>>ced; //reutilizo ced como auxiliar
+								cout<<endl<<endl;
+							}
+							else
+							{
+								ced = 0;
+							}
+						} while (sumUC < 12 && ced != 0);
+						
+						if (sumUC < 3 || sumUC > 12)
+						{
+							cout<<"No se pudo inscribir debido a que no cumplia con el min/max "
+								<<"de UC inscritas."<<endl;
+						}//if cuando no se pudo inscribir
+						else
+						{
+							char matsJuntas[15];
+							matsJuntas[0] = '\0';
+							cout<<"Finalizada la inscripcion, estas son las materias que inscribio:"<<endl;
+							for (ced = 0; ced < auxI; ced++) //reutilizo ced como iterador
+							{
+								strcat(matsJuntas, materias[ced]);
+								itoa(carr.getCodigo(), aux, 10);
+								strcat(aux, materias[ced]);
+								mat.setCodigo(atoi(aux));
+								obj2.Buscar_Simple(mat);
+								cout<<mat<<endl;
+							}
+							
+							//muestro los datos del alumn que se estaba inscribiendo
+							//de modo que pueda verificar y decidir si esta bien el registro o no
+							insc = Inscrito(alumn.getCedula(), matsJuntas, sumUC); //FALTA VALIDAR QUE NO REPITA ASIGNATURAS EN LA MISMA LISTA
+							cout<<"Datos del alumno: "<<insc<<endl<<endl;
+							cout<<"Esta seguro de que desea continuar con la inscripcion?"<<endl 
+								<<"0=no   1=si    Respuesta:";
+							cin>>ced;
+							if (ced == 1)
+							{
+								obj.EscribirBi(insc);
+								cout<<"Alumno inscrito."<<endl;
+							}
+							else
+							{
+								cout<<"Alumno no inscrito.";
+							}
+						}//else para cuando se pudo inscribir
+					}//si archivo se pudo abrir correctamente
+					else
+					{
+						cout<<"Hubo un problema al abrir archivo de materias."<<endl;
+					}//if no se pudo abrir archivo
+					
+					if (obj2.EstaAbierto())
+						obj2.Cerrar();
+				}//if no encontrado en lista de inscritos
+				else if (obj.Falla())
+				{
+					cout<<"Hubo un problema al abrir Inscritos.dat"<<endl;
+					if (obj.EstaAbierto())
+						obj.Cerrar();
+					obj.AbrirT(ios::out|ios::binary);
+				}//if fallo al abrir Inscritos.dat
+				else
+				{
+					cout<<"No puede inscribirse dos veces en un mismo semestre."<<endl;
+				}//if encontrado en lista de inscritos
+				
+				if (obj.EstaAbierto())
+					obj.Cerrar();
+			}//si al obtener codigo es diferente a 0 es que lo consiguio
+			else
+			{
+				cout<<"Cedula registrada pero la carrera no existe. ERROR."<<endl;
+			}//cuando la carrera no coincide pero nombre si, error de archivo
+		}//cuando es diferente de 0 es que lo consiguio
+		else
+		{
+			cout<<"Alumno no registrado, antes de inscribirse primero registrese."<<endl;
+		}//alumno no registrado
+	}//else cedula es valida
+}//void inscripcion()
+
+void consultarInscripcion(int cedd)
+{
+	unsigned int ced = cedd;
+	if (cedd > 0 && cedd < 40000000)
+	{
+		Inscrito insc(ced, (char*)"", 0);
+		Archivo<Inscrito>obj((char*)"Inscritos.dat", transfInscrito);
+		obj.AbrirT(ios::in|ios::binary);
+		
+		if (obj.Buscar_Simple(insc))
+		{
+			cout<<insc<<endl;
+		}
+		else
+		{
+			Alumno al = buscarAlumno(ced);
+			if (al.getCedula() != 0){
+				cout<<"Alumno no inscrito."<<endl;
+			}
+			else
+			{
+				cout<<"Alumno no registrado."<<endl;
+			}
+		}//else no consiguio alumno en Inscritos.dat
+		
+		if (obj.EstaAbierto())
+			obj.Cerrar(); 
+	}//if cedula es valida
+	else
+	{
+		cout<<"No es una cedula valida. Cedula debe ser un numero entre 0 y 40000000."<<endl;
+	}//else cedula no es valida
+}//void consultarInscripcion(int cedd)
+
+void consultInscAsig(int codigo) //FALTA ORDENAR POR CEDULA PERO ESO SE HACE EN LOS ARCHIVOS
+{
+	Materia mat = buscarMateria(codigo);
+	if (mat.getCodigo() != 0)
+	{
+		Archivo<Inscrito>obj1((char*)"Inscritos.dat", transfInscrito);
+		obj1.AbrirT(ios::in|ios::binary);
+		cout<<"Alumnos inscritos para la asignatura "<<codigo<<":"<<endl<<endl;
+		if (!obj1.Falla())
+		{
+			Inscrito insc;
+			Alumno al;
+			char codMaterias[15];
+			int i, aux, contInsc = 0;
+			while (!obj1.Es_Fin())
+			{
+				obj1.LeerB(insc);
+				if (!obj1.Es_Fin()) {
+					al = buscarAlumno(insc.getCedula());
+					if (al.getCedula() != 0 && al.getCarrera() == codigo/100)
+					{
+						strcpy(codMaterias, insc.getCodMaterias());
+						for (i = 0; i < 15 && codMaterias[i] != '\0'; i += 2)
+						{
+							aux = (int) (codMaterias[i] - '0');
+							aux =  (aux * 10) + (int) (codMaterias[i+1] - '0');
+							if (aux == codigo%100)
+							{
+								cout<<al<<endl;
+								//utilizando al se pueden saber los datos del alumno para imprimir
+								//utilizando mat se pueden saber los datos de la materia para imprimir
+								contInsc++;
+								break;
+							}//if materia si inscrita
+						}//for para comparar codigo con la materia inscrita
+					}//alumno registrado, inscrito y de la misma carrera de la asignatura que se busca
+				}//si no es fin de arhivo
+			}//while no sea fin de archivo
+			
+			if (contInsc > 0)
+			{
+				cout<<endl<<"Total de alumnos inscritos para la asignatura: "<<contInsc<<endl;
+			}
+			else
+			{
+				cout<<"No hay ningun alumno inscrito para la asignatura"<<endl;
+			}
+		}//si Inscritos abrio
+		else
+		{
+			cout<<"Hubo un problema al abrir Inscritos.dat"<<endl;
+		}//si Inscritos no abrio
+	}//if codigo de asignatura existe
+	else
+	{
+	cout<<"Codigo de asignatura no registrado."<<endl;
+	}//else codigo de asignatura no existe
+}//void consultInscAsig(int)
+//FIN FUNCIONES DEL SWITCH EN MAIN
+//------------------------------------
+
+//MAIN
+int main(int argc, char** argv) {
+	setlocale(LC_ALL, "");
+	int ban, aux;
+	do
+	{
+		system("cls");
+		cout<<"|-------------<Unidad de Admision UNET>----------------|"<<endl;
+		cout<<"|----------------------<Menú>--------------------------|"<<endl;
+		cout<<"|-<Agregar alumno>--------------------------------<|1|>|"<<endl;
+		cout<<"|-<Consultar alumno>------------------------------<|2|>|"<<endl;
+		cout<<"|-<Consultar materia>-----------------------------<|3|>|"<<endl;
+		cout<<"|-<Pensum de la carrera>--------------------------<|4|>|"<<endl;	
+		cout<<"|-<Incripcion de alumno>--------------------------<|5|>|"<<endl;
+		cout<<"|-<Reporte de inscripcion>------------------------<|6|>|"<<endl;
+		cout<<"|-<Lista de alumnos inscritos en una asignatura>--<|7|>|"<<endl;
+		cout<<"|-<Salir>-----------------------------------------<|8|>|"<<endl;
+		cout<<"|-------------<Que operación requiere?>----------------|"<<endl;	
+		cout<<"Opcion: "; cin>>ban;
+		cout<<endl;
+		
+		switch(ban)
+		{
+			case 1: //Agregar alumno
+				agregarAlumno();
+			break;
+			
+			case 2: //Consultar alumno
+				cout<<"Ingrese cedula a buscar: ";
+   				cin>>aux;
+   				cout<<endl;
+				consultarAlumno(aux);
+			break;
+			
+			case 3: //Consultar materia
+				cout<<"Ingrese codigo de la asignatura que desea consultar: ";
+				cin>>aux;
+				cout<<endl;
+				consultarAsignatura(aux);
+			break;
+			
+			case 4:
+				cout<<"Ingrese codigo de la carrera a consultar: ";
+				cin>>aux;
+				cout<<endl;
+				pensumCarrera(aux);
+			break;
+			
+			case 5: //Inscripcion de nuevo alumno
+				inscripcion();
+			break;
+			
+			case 6: //Reporte de inscripcion
+				cout<<"Ingrese cedula del alumno del que desea consultar la inscripcion: ";
+				cin>>aux;
+				cout<<endl;
+				consultarInscripcion(aux);
+			break;
+			
+			case 7: //Lista de alumnos inscritos en una asignatura
+				cout<<"Ingrese codigo de asignatura de la cual desea consultar los alumnos "
+					<<"inscritos: "<<endl;
+				cin>>aux;
+				cout<<endl;
+				consultInscAsig(aux);
+			break;
+				
+			case 8: //Salir
+				cout<<"|-----------<Que tenga un feliz dia :D>----------------|"<<endl;	
+			break;
+			
+			default: //Opcion de menu no valida
+				cout<<"|-----<No es una opcion valida, ingrese de nuevo.>-----|"<<endl;
+			break;
+		}//switch(band)
+		cout<<endl<<"Presione cualquier tecla para volver al menu.";
+		cin.sync();
+		cin.get();
+	}while(ban!=8);	
+	return 0;
+}//int main()
+//FIN MAIN -------------------
