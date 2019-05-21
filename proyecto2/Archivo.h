@@ -1,4 +1,5 @@
 //Archivo.h
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <string.h>
@@ -15,11 +16,12 @@ class Archivo
       T buffer;
    public:
       Archivo() { }
-      Archivo( char *n )                  { strcpy(nom,n); Peso();TotalObj(); pf=NULL; }
-      Archivo( char *n, T(*f)(char *k ) ) { strcpy(nom,n); Peso();TotalObj(); pf=f;    }
-      void AbrirT( const std::_Ios_Openmode &t ){ obj.open(nom,t); }
+      Archivo( char *n )                  { strcpy(nom,n);  pf=NULL; }
+      Archivo( char *n, T(*f)(char *k ) ) { strcpy(nom,n);  pf=f;    }
+      void AbrirT( const std::_Ios_Openmode &t ){ obj.open(nom,t);Peso();TotalObj();Inicio();}
+      int getTotalObj(){return this->totalObj;}
       bool EstaAbierto() { return obj.is_open(); }
-      void Peso()        { peso=sizeof(buffer);      }
+      void Peso()        { peso=sizeof(T);      }
       void Inicio()      { obj.seekg(0,ios::beg); }
       void Limpiar()     { obj.clear();           }
       void Cerrar()      { obj.close();           }
@@ -28,9 +30,9 @@ class Archivo
       T    Get_buf()     { return buffer;         }
       void CambiarNom( char *n ) { strcpy(nom, n); }
       void Leer(char c[]){obj.getline(c,59,'\n'); }
-      void LeerB( T &b ){Peso(); obj.read((char*)&b,peso);}
+      void LeerB( T &b ){ obj.read((char*)&b,sizeof(T));}
       void LeerBi(int pos){obj.seekg(pos*peso);obj.read((char *)&buffer,peso); }
-      void RescribirBi(T dato,int pos){obj.seekg(pos*peso);obj.write((char *)&dato,peso);}
+      void RescribirBi(T &dato,int pos){Limpiar();obj.seekg(pos*peso);obj.write((char *)&dato,peso);}
       void EscribirBi(T dato){Limpiar(); obj.seekp(ios::end);obj.write((char *)&dato,peso);}
       void Posicion(int pos){obj.seekg(pos*peso,ios::beg); }
       void Convertir(char c[] ) { buffer=pf(c); }
@@ -59,15 +61,14 @@ void Archivo<T>::MostrarBi()
 	T aux;
 	int num=0,n=0,total=sizeof(aux);
 	bool pa=false;
-	Limpiar();
-	obj.read((char *)&buffer,sizeof(T));
+	Limpiar();Inicio(); 
+	obj.read((char *)&buffer,sizeof(aux));
 	while(!this->Es_Fin())
 	{
 		n++;
-		num++;
 		cout<<buffer<<endl;
 		obj.seekg(total*n);
-		obj.read((char *)&buffer,sizeof(T));
+		obj.read((char *)&buffer,sizeof(aux));
 	}
 	Limpiar();
 	Posicion(0);
@@ -183,15 +184,15 @@ void Archivo<T>::Ordenar()
 {
      T aux, ini;
      int i, j, pmen;  
-     Peso();
-     Limpiar();
-     for ( i=0; i<totalObj-1; i++ )
+     Limpiar();Inicio();
+     for ( i=0; i<totalObj;)
      {
         Posicion(i);
         LeerB(aux); ini= aux;
         pmen=i;
         for (j=i+1; j<totalObj; j++)
         {
+        	
             Posicion(j);
             LeerB(buffer);
             if (buffer < aux)
@@ -204,7 +205,9 @@ void Archivo<T>::Ordenar()
         {
              RescribirBi(aux,i);
              RescribirBi(ini,pmen);
-        } 
+        }
+		i++;
      }// fin for i 
 }
+
 

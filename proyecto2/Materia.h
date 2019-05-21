@@ -25,6 +25,8 @@ class Materia
 	  	return UC;
 	  }
       
+      int getSemestre(){return this->semestre;}
+      
       void setCodigo(int cod) { codigo = cod; }
       
 	  bool operator==(Materia &a)

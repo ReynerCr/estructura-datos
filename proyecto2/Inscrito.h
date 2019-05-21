@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string.h>
 #include <cstdlib>
+#include <windows.h>
 #ifndef INSCRITO_H
 #define INSCRITO_H
 using namespace std;
