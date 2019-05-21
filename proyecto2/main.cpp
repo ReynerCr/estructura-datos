@@ -7,8 +7,6 @@
 */
 
 #include <iostream>
-#include <windows.h>
-#include <wchar.h>
 #include <cstdlib>
 #include <locale.h>
 #include "Alumno.h"
